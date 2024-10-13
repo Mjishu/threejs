@@ -33,6 +33,10 @@ scene.add(line);
 
 renderer.render(scene, camera)
 
+const title = document.querySelector(".title");
+title.innerText = "THis is three js"
+document.body.appendChild(title)
+
 // function animate() {
 //     requestAnimationFrame(animate)
 //     renderer.render(scene, camera);
