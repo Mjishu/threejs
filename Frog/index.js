@@ -100,10 +100,35 @@ scene.add(ambientLight);
 const bodyLight = new THREE.PointLight(body, 0.5);
 bodyMesh.add(bodyLight);
 
+//jumping
+let isJumping = false;
+let velocity = 0;
+let gravity = -0.05;
+let jumpStrength = 0.5;
+
+function jumpFunction(e) {
+    if (e.code === "Space" && !isJumping) {
+        isJumping = true;
+        velocity = jumpStrength
+    }
+}
+
+window.addEventListener("keydown", jumpFunction);
+
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
     composer.render(scene, camera);
+    if (isJumping) {
+        bodyMesh.position.y += velocity;
+        velocity += gravity;
+
+        if (bodyMesh.position.y <= 0) {
+            bodyMesh.position.y = 0;
+            isJumping = false;
+            velocity = 0;
+        }
+    }
 }
 
 animate();
@@ -115,11 +140,3 @@ function handleWindowResise() {
 }
 window.addEventListener("resize", handleWindowResise, false);
 
-function jumpFunction(e) {
-    if (e.code === "Space") {
-        bodyMesh.translateY(1);
-        setTimeout(() => { bodyMesh.translateY(-1) }, 1000)
-    }
-}
-
-window.addEventListener("keydown", jumpFunction); 
